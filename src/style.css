@@ -1,0 +1,19 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html {
+	scroll-behavior: smooth;
+}
+
+body {
+	@apply min-h-screen h-full w-full bg-white;
+}
+
+.filter-panel {
+	@apply duration-500 ease-out -translate-x-full xl:translate-x-0;
+}
+
+.filter-panel.open {
+	@apply duration-300 ease-linear translate-x-0;
+}
