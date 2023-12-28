@@ -7,7 +7,7 @@ const App = () => {
 		<div className='max-w-xl px-4 mx-auto md:px-0 md:max-w-2xl lg:max-w-3xl'>
 			<HomeNavBar />
 			<main className='max-w-2xl py-10 mx-auto lg:max-w-full'>
-				<img src='public/assets/logo.png' className='object-cover w-40 mx-auto' alt='logo' />
+				<img src='assets/logo.png' className='object-cover w-40 mx-auto' alt='logo' />
 				<SearchBar />
 				<ul className='flex justify-center gap-6 text-sm font-light text-zinc-700'>
 					{['Restaurants', 'Nightlife', 'Services'].map((item, index) => (

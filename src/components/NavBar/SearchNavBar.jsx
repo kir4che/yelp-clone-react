@@ -8,7 +8,7 @@ const SearchNavBar = ({ setFilters }) => {
 			<section className='flex items-center justify-center px-4 pt-4 pb-1 bg-white md:px-10 lg:px-12 xl:px-14 md:justify-between'>
 				<div className='flex items-center gap-4 xl:gap-6'>
 					<Link to='/'>
-						<img src='public/assets/logo.png' className='object-cover w-20' alt='logo' />
+						<img src='assets/logo.png' className='object-cover w-20' alt='logo' />
 					</Link>
 					<SearchBar setFilters={setFilters} />
 				</div>
