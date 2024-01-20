@@ -447,20 +447,6 @@ const SearchResults = ({ filters, setFilters, setRegion, setLocations }) => {
 							))}
 					</ul>
 				)}
-				{/* 分頁導航 */}
- 				{/* <div className='flex justify-center -mx-4 gap-x-4 py-4 border-b'>
-					{Array.from({ length: totalBusinesses / limit }, (_, index) => (
-						<button
-							className={`px-3 py-1 rounded-full ${
-								currentPage === index ? 'bg-teal-600 text-white' : 'bg-white text-teal-600 hover:bg-teal-100'
-							}`}
-							onClick={() => setCurrentPage(index)}
-							key={index}
-						>
-							{index + 1}
-						</button>
-					))}
-				</div> */}
 			</div>
 		</div>
 	)
