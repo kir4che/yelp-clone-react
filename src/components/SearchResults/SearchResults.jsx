@@ -17,31 +17,33 @@ const SearchResults = ({ filters, setFilters, setRegion, setLocations }) => {
 	  switch (filterType) {
 	    case 'priceRange':
 	    case 'attrs':
-	      updatedValues = filters[filterType].includes(value) ? filters[filterType].filter((filter) => filter !== value) : [...filters[filterType], value];
-	      paramName = filterType;
+	      updatedValues = filters[filterType].includes(value) ? filters[filterType].filter((filter) => filter !== value) : [...filters[filterType], value]
+	      paramName = filterType
 	      break;
 	    case 'open':
-	      setFilters({ ...filters, openNow: !filters.openNow });
+	      updatedValue = []
+	      setFilters({ ...filters, openNow: !filters.openNow })
 	      paramName = filterType;
 	      value = !filters.openNow;
 	      break;
 	    case 'radius':
-	      setFilters({ ...filters, distance: value });
-	      paramName = filterType;
+	      updatedValue = []
+	      setFilters({ ...filters, distance: value })
+	      paramName = filterType
 	      break;
 	    default:
 	      break;
 	  }
 	
-	  setFilters({ ...filters, [filterType]: updatedValues });
+	  setFilters({ ...filters, [filterType]: updatedValues })
 	
 	  if (updatedValues.length > 0) {
-	    const paramValue = updatedValues.length > 1 ? updatedValues.join(',') : updatedValues[0];
-	    searchParams.set(paramName, paramValue);
-	  } else searchParams.delete(paramName);
+	    const paramValue = updatedValues.length > 1 ? updatedValues.join(',') : updatedValues[0]
+	    searchParams.set(paramName, paramValue)
+	  } else searchParams.delete(paramName)
 	
-	  setSearchParams(searchParams);
-	};
+	  setSearchParams(searchParams)
+	}
 
 	const handleFilterClear = () => {
 		setFilters({ sortby: filters.sortby, priceRange: '', openNow: false, attrs: [], distance: 0 })
