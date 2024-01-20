@@ -12,39 +12,36 @@ const SearchResults = ({ filters, setFilters, setRegion, setLocations }) => {
 	const [isPriceRangeFilterOpen, setIsPriceRangeFilterOpen] = useState(false)
 
 	const handleFilter = (filterType, value) => {
-	  let updatedValues
+	  let updatedValues, paramName;
+	
 	  switch (filterType) {
 	    case 'priceRange':
-	      updatedValues = filters.priceRange.includes(value) ? filters.priceRange.filter((filter) => filter !== value) : [...filters.priceRange, value]
-	      setFilters({ ...filters, priceRange: updatedValues })
-	
-	      if (updatedValues.length > 0) {
-	        const priceParamValue = updatedValues.length > 1 ? updatedValues.join(',') : updatedValues[0]
-	        searchParams.set('priceRange', priceParamValue)
-	      } else searchParams.delete('priceRange')
-	      break;
-	    case 'openNow':
-	      setFilters({ ...filters, openNow: !filters.openNow })
-	      !filters.openNow ? searchParams.set('open', !filters.openNow) : searchParams.delete('open')
-	      break;
 	    case 'attrs':
-	      updatedValues = filters.attrs.includes(value) ? filters.attrs.filter((filter) => filter !== value) : [...filters.attrs, value]
-	      setFilters({ ...filters, attrs: updatedValues })
-	
-	      if (updatedValues.length > 0) {
-	        const attrParamValue = updatedValues.length > 1 ? updatedValues.join(',') : updatedValues[0]
-	        searchParams.set('attrs', attrParamValue);
-	      } else searchParams.delete('attrs')
+	      updatedValues = filters[filterType].includes(value) ? filters[filterType].filter((filter) => filter !== value) : [...filters[filterType], value];
+	      paramName = filterType;
 	      break;
-	    case 'distance':
-	      setFilters({ ...filters, distance: value })
-	      searchParams.set('radius', value)
+	    case 'open':
+	      setFilters({ ...filters, openNow: !filters.openNow });
+	      paramName = filterType;
+	      value = !filters.openNow;
+	      break;
+	    case 'radius':
+	      setFilters({ ...filters, distance: value });
+	      paramName = filterType;
 	      break;
 	    default:
 	      break;
 	  }
-	  setSearchParams(searchParams)
-	}
+	
+	  setFilters({ ...filters, [filterType]: updatedValues });
+	
+	  if (updatedValues.length > 0) {
+	    const paramValue = updatedValues.length > 1 ? updatedValues.join(',') : updatedValues[0];
+	    searchParams.set(paramName, paramValue);
+	  } else searchParams.delete(paramName);
+	
+	  setSearchParams(searchParams);
+	};
 
 	const handleFilterClear = () => {
 		setFilters({ sortby: filters.sortby, priceRange: '', openNow: false, attrs: [], distance: 0 })
