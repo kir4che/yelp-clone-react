@@ -11,54 +11,46 @@ const SearchResults = ({ filters, setFilters, setRegion, setLocations }) => {
 	const [isFilterOpen, setIsFilterOpen] = useState(false)
 	const [isPriceRangeFilterOpen, setIsPriceRangeFilterOpen] = useState(false)
 
-	const handlePriceRangeFilter = (priceRange) => {
-		let updatedPrices
-
-		if (filters.priceRange.includes(priceRange))
-			updatedPrices = filters.priceRange.filter((filter) => filter !== priceRange)
-		else updatedPrices = [...filters.priceRange, priceRange]
-		setFilters({ ...filters, priceRange: updatedPrices })
-
-		if (updatedPrices.length > 0) {
-			const priceParamValue = updatedPrices.length > 1 ? updatedPrices.join(',') : updatedPrices[0]
-			searchParams.set('priceRange', priceParamValue)
-		} else searchParams.delete('priceRange')
-
-		setSearchParams(searchParams)
-	}
-
-	const handleOpenNowFilter = () => {
-		setFilters({ ...filters, openNow: !filters.openNow })
-		!filters.openNow ? searchParams.set('open', !filters.openNow) : searchParams.delete('open')
-		setSearchParams(searchParams)
-	}
-
-	const handleAttrFilter = (attr) => {
-		let updatedAttrs
-
-		if (filters.attrs.includes(attr)) updatedAttrs = filters.attrs.filter((filter) => filter !== attr)
-		else updatedAttrs = [...filters.attrs, attr]
-		setFilters({ ...filters, attrs: updatedAttrs })
-
-		if (updatedAttrs.length > 0) {
-			const attrParamValue = updatedAttrs.length > 1 ? updatedAttrs.join(',') : updatedAttrs[0]
-			searchParams.set('attrs', attrParamValue)
-		} else searchParams.delete('attrs')
-
-		setSearchParams(searchParams)
-	}
-
-	const handleDistanceFilter = (distance) => {
-		setFilters({ ...filters, distance })
-		searchParams.set('radius', distance)
-		setSearchParams(searchParams)
+	const handleFilter = (filterType, value) => {
+	  let updatedValues
+	  switch (filterType) {
+	    case 'priceRange':
+	      updatedValues = filters.priceRange.includes(value) ? filters.priceRange.filter((filter) => filter !== value) : [...filters.priceRange, value]
+	      setFilters({ ...filters, priceRange: updatedValues })
+	
+	      if (updatedValues.length > 0) {
+	        const priceParamValue = updatedValues.length > 1 ? updatedValues.join(',') : updatedValues[0]
+	        searchParams.set('priceRange', priceParamValue)
+	      } else searchParams.delete('priceRange')
+	      break;
+	    case 'openNow':
+	      setFilters({ ...filters, openNow: !filters.openNow })
+	      !filters.openNow ? searchParams.set('open', !filters.openNow) : searchParams.delete('open')
+	      break;
+	    case 'attrs':
+	      updatedValues = filters.attrs.includes(value) ? filters.attrs.filter((filter) => filter !== value) : [...filters.attrs, value]
+	      setFilters({ ...filters, attrs: updatedValues })
+	
+	      if (updatedValues.length > 0) {
+	        const attrParamValue = updatedValues.length > 1 ? updatedValues.join(',') : updatedValues[0]
+	        searchParams.set('attrs', attrParamValue);
+	      } else searchParams.delete('attrs')
+	      break;
+	    case 'distance':
+	      setFilters({ ...filters, distance: value })
+	      searchParams.set('radius', value)
+	      break;
+	    default:
+	      break;
+	  }
+	  setSearchParams(searchParams)
 	}
 
 	const handleFilterClear = () => {
 		setFilters({ sortby: filters.sortby, priceRange: '', openNow: false, attrs: [], distance: 0 })
 		searchParams.delete('priceRange')
-		searchParams.delete('attrs')
 		searchParams.delete('open')
+		searchParams.delete('attrs')
 		searchParams.delete('radius')
 		setSearchParams(searchParams)
 	}
@@ -144,7 +136,7 @@ const SearchResults = ({ filters, setFilters, setRegion, setLocations }) => {
 									? 'border'
 									: 'border-r border-y rounded-full rounded-l'
 							} w-12 py-1.5 hover:bg-zinc-300 hover:transition-colors hover:ease-out hover:duration-300 border-zinc-300 text-xs font-semibold`}
-							onClick={() => handlePriceRangeFilter(index + 1)}
+							onClick={() => handleFilter('priceRange', index+1)}
 							key={index}
 						>
 							{price}
@@ -159,7 +151,7 @@ const SearchResults = ({ filters, setFilters, setRegion, setLocations }) => {
 							id='OpenNow'
 							className='h-[1.15rem] w-[1.15rem] accent-teal-600 rounded'
 							checked={filters.openNow}
-							onChange={handleOpenNowFilter}
+							onChange={() => handleFilter('open', !filters.openNow)}
 						/>
 						<span className='text-sm'>Open Now</span>
 					</label>
@@ -181,7 +173,7 @@ const SearchResults = ({ filters, setFilters, setRegion, setLocations }) => {
 										id={attr}
 										className='h-[1.15rem] w-[1.15rem] accent-teal-600 rounded'
 										checked={filters.attrs.includes(attr)}
-										onChange={() => handleAttrFilter(attr)}
+										onChange={() => handleFilter('attrs', attr)}
 									/>
 									<span className='text-sm'>{attr.replace(/_/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase())}</span>
 								</label>
@@ -201,7 +193,7 @@ const SearchResults = ({ filters, setFilters, setRegion, setLocations }) => {
 										id={distance}
 										className='h-[1.15rem] w-[1.15rem] accent-teal-600 rounded'
 										checked={filters.distance === distance}
-										onChange={() => handleDistanceFilter(distance)}
+										onChange={() => handleFilter('radius', distance)}
 									/>
 									<span className='text-sm'>
 										{distance === 40000
