@@ -12,36 +12,30 @@ const SearchResults = ({ filters, setFilters, setRegion, setLocations }) => {
 	const [isPriceRangeFilterOpen, setIsPriceRangeFilterOpen] = useState(false)
 
 	const handleFilter = (filterType, value) => {
-	  let updatedValues, paramName;
+	  let updatedValues;
 	
 	  switch (filterType) {
 	    case 'priceRange':
 	    case 'attrs':
 	      updatedValues = filters[filterType].includes(value) ? filters[filterType].filter((filter) => filter !== value) : [...filters[filterType], value]
-	      paramName = filterType
+	      setFilters({ ...filters, [filterType]: updatedValues })
+	      if (updatedValues.length > 0) {
+	        const paramValue = updatedValues.length > 1 ? updatedValues.join(',') : updatedValues[0]
+	        searchParams.set(filterType, paramValue)
+	       } else searchParams.delete(filterType)
 	      break;
 	    case 'open':
-	      updatedValues = []
-	      setFilters({ ...filters, openNow: !filters.openNow })
-	      paramName = filterType;
-	      value = !filters.openNow;
+	      setFilters({ ...filters, openNow: value })
+	      value ? searchParams.set(filterType, value) : searchParams.delete(filterType)
 	      break;
 	    case 'radius':
-	      updatedValues = []
 	      setFilters({ ...filters, distance: value })
-	      paramName = filterType
+	      searchParams.set(filterType, value)
 	      break;
 	    default:
 	      break;
 	  }
-	
-	  setFilters({ ...filters, [filterType]: updatedValues })
-	
-	  if (updatedValues.length > 0) {
-	    const paramValue = updatedValues.length > 1 ? updatedValues.join(',') : updatedValues[0]
-	    searchParams.set(paramName, paramValue)
-	  } else searchParams.delete(paramName)
-	
+
 	  setSearchParams(searchParams)
 	}
 
