@@ -448,7 +448,7 @@ const SearchResults = ({ filters, setFilters, setRegion, setLocations }) => {
 					</ul>
 				)}
 				{/* 分頁導航 */}
-				<div className='flex justify-center -mx-4 gap-x-4 py-4 border-b'>
+ 				{/* <div className='flex justify-center -mx-4 gap-x-4 py-4 border-b'>
 					{Array.from({ length: totalBusinesses / limit }, (_, index) => (
 						<button
 							className={`px-3 py-1 rounded-full ${
@@ -460,7 +460,7 @@ const SearchResults = ({ filters, setFilters, setRegion, setLocations }) => {
 							{index + 1}
 						</button>
 					))}
-				</div>
+				</div> */}
 			</div>
 		</div>
 	)
