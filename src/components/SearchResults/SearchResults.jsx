@@ -49,14 +49,11 @@ const SearchResults = ({ filters, setFilters, setRegion, setLocations }) => {
 	}
 
 	const [businesses, setBusinesses] = useState([])
-	const [currentPage, setCurrentPage] = useState(0)
-	const totalBusinesses = 5,
-		limit = 5
+	const totalBusinesses = 5
 
-	const fetchBusinesses = async (currentPage) => {
+	const fetchBusinesses = async () => {
 		setIsLoading(true)
 
-		let offset = currentPage * limit
 		let params =
 			(searchParams.get('priceRange') ? `&price=${searchParams.get('priceRange')}` : '') +
 			(searchParams.get('attrs') ? `&attributes=${searchParams.get('attrs')}` : '') +
@@ -65,8 +62,7 @@ const SearchResults = ({ filters, setFilters, setRegion, setLocations }) => {
 			`&sort_by=${searchParams.get('sortby') || 'best_match'}`
 
 		try {
-			const responce = await fetch(
-				`https://cors-anywhere.herokuapp.com/https://api.yelp.com/v3/businesses/search?term=${term}&location=${location}${params}&offset=${offset}&limit=${limit}`,
+			const responce = await fetch(`https://cors-anywhere.herokuapp.com/https://api.yelp.com/v3/businesses/search?term=${term}&location=${location}${params}&limit=${totalBusinesses}`,
 				{
 					method: 'GET',
 					headers: {
@@ -80,10 +76,7 @@ const SearchResults = ({ filters, setFilters, setRegion, setLocations }) => {
 
 			const data = await responce.json()
 			setBusinesses(data.businesses)
-			setRegion({
-				lat: data.region.center.latitude,
-				lng: data.region.center.longitude,
-			})
+			setRegion({lat: data.region.center.latitude, lng: data.region.center.longitude})
 			setLocations(data.businesses.map((business) => business.coordinates))
 			setIsLoading(false)
 		} catch (error) {
@@ -92,8 +85,8 @@ const SearchResults = ({ filters, setFilters, setRegion, setLocations }) => {
 	}
 
 	useEffect(() => {
-		fetchBusinesses(currentPage)
-	}, [currentPage, searchParams])
+		fetchBusinesses()
+	}, [searchParams])
 
 	return (
 		<div className='h-full w-full xl:flex shadow-inner'>
@@ -367,7 +360,7 @@ const SearchResults = ({ filters, setFilters, setRegion, setLocations }) => {
 											<div className='flex w-full flex-col gap-4 sm:gap-0 justify-between'>
 												<div>
 													<h3 className='font-bold text-xl'>
-														<span>{currentPage * limit + index + 1}. </span>
+														<span>{index + 1}. </span>
 														<span className='hover:underline'>{business.name}</span>
 													</h3>
 													<p className='text-sm flex items-end mb-2 gap-1'>
