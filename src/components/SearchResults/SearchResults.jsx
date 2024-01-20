@@ -21,13 +21,13 @@ const SearchResults = ({ filters, setFilters, setRegion, setLocations }) => {
 	      paramName = filterType
 	      break;
 	    case 'open':
-	      updatedValue = []
+	      updatedValues = []
 	      setFilters({ ...filters, openNow: !filters.openNow })
 	      paramName = filterType;
 	      value = !filters.openNow;
 	      break;
 	    case 'radius':
-	      updatedValue = []
+	      updatedValues = []
 	      setFilters({ ...filters, distance: value })
 	      paramName = filterType
 	      break;
