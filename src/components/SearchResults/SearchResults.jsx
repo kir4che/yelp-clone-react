@@ -306,7 +306,7 @@ const SearchResults = ({ filters, setFilters, setRegion, setLocations }) => {
 												id={index}
 												className='h-[1.15rem] w-[1.15rem] accent-teal-600 rounded'
 												checked={filters.priceRange.includes(index + 1)}
-												onChange={() => handlePriceRangeFilter(index + 1)}
+												onChange={() => handleFilter('priceRange', index+1)}
 											/>
 											<span className='text-sm'>{price}</span>
 										</label>
@@ -320,12 +320,11 @@ const SearchResults = ({ filters, setFilters, setRegion, setLocations }) => {
 						className={`${
 							filters.openNow ? 'border-teal-600 bg-teal-600/15 text-teal-700' : ''
 						} rounded-full flex items-center gap-2 px-3 text-xs py-1.5 font-medium bg-white border border-zinc-400 hover:bg-zinc-200/50`}
-						onClick={handleOpenNowFilter}
+						onClick={() => handleFilter('open', !filters.openNow)}
 					>
 						<span>Open Now</span>
 					</button>
 				</section>
-				{/* 前十間餐廳，並分成兩頁 */}
 				{isLoading ? (
 					<div className='flex items-center gap-3 mt-8'>
 						<svg
